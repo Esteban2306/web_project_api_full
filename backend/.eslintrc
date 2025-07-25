@@ -1,0 +1,23 @@
+// Configuración de ESLint para un proyecto JavaScript
+{
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true
+  },
+  "extends": ["eslint:recommended", "airbnb-base"],
+  "parserOptions": {
+    "ecmaVersion": 12,
+    "sourceType": "module"
+  },
+  "rules": {
+    // Permitir console.log
+    "no-console": ["warn", { "allow": ["log"] }],
+    
+    // Permitir identificadores con guión bajo como _id
+    "no-underscore-dangle": ["off"],
+    
+    // Desactivar o relajar reglas de saltos de línea
+    "linebreak-style": "off"
+  }
+}

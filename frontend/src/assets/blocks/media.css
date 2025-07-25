@@ -1,0 +1,262 @@
+@media screen and (min-width: 320px) and (max-width: 580px) {
+    .header{   
+        padding: 20 px 0 10px 0;
+    }
+    .header__title_word{
+        margin-left: 27px;
+    }
+
+    .header__button{
+        font-size: 16px;
+    }
+
+    .header__user {
+        display: none;
+      }
+    
+    .burger {
+        display: block;
+        margin-right: 20px;
+      }
+
+    .profile{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #galery__content{
+        grid-template-columns: auto;;
+    }
+
+    .profile__info-list{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .profile__info-name{
+    font-size: 22px;
+    }
+    .profile__edit-button{
+        margin: 22px 0 0 10px;
+        max-width: 18px;
+        height: 18px;
+    }
+
+    .galery__item{
+        margin: auto;
+    }
+
+    .modal{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal__content{
+        max-width: 241px;
+        width: 100%;
+    }
+
+    .close{
+        width: 20px;
+        height: 20px;
+        right: 6px;
+        top: -37px;
+    }
+
+    .modal__add-content{
+        margin: 50px 22px;
+        position: fixed;
+        max-height: 275px;
+    }
+
+    .close__add{
+        width: 20px;
+        height: 20px;
+        right: 6px;
+        top: -37px;
+    }
+
+    .popupimg__content{
+        max-width: 75vw;
+        max-height: 63vh;
+    }
+
+    .popupimg__content-image {
+        max-width: 75vw;
+        max-height: 63vh;
+    }
+
+    .popupimg__content-close{
+        width: 30px;
+        height: 30px;
+        right: -24px;
+        top: -35px;
+    }
+
+    .sign-input{
+        max-width: 260px;
+    }
+
+    .sign-in__button{
+        max-width: 260px;
+        margin: 160px auto 20px;
+    }
+
+    .sign-in__content{
+        margin-top: 40px;
+    }
+
+    .sign-up__content{
+        margin-top: 40px;
+    } 
+
+    .sign-up__button{
+        max-width: 260px;
+        margin: 160px auto 20px;
+    }
+
+    .info-tooltip__container{
+        max-width: 280px;
+        padding: 40px 0px;
+    }
+
+    .info-tooltip__close-button{
+        width: 30px;
+        height: 30px;
+        right: 122px;
+        top: -48px;
+    }
+}
+
+@media screen and (min-width: 581px) and (max-width: 768px) {
+    .header__title_word{
+        margin-left: 27px;
+    }
+
+    .profile{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .profile__info-list{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .profile__info-name{
+    font-size: 22px;
+    }
+    .profile__edit-button{
+        margin: 22px 0 0 10px;
+        max-width: 18px;
+        height: 18px;
+    }
+    #galery__content{
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 8px;
+    }
+    .galery__item{
+        margin: auto;
+    }
+
+    .modal{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    
+    .modal__content{
+        max-width: 17rem;
+        width: 100%;
+
+    }
+
+    .close{
+        width: 20px;
+        height: 20px;
+        right: 6px;
+        top: -37px;
+    }
+
+    .modal__add{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal__add-content{
+        margin: 100px auto;
+    }
+
+    .close__add{
+        width: 20px;
+        height: 20px;
+        right: 6px;
+        top: -37px;
+    }
+}
+
+@media screen and (min-width: 769px) and (max-width: 999px){
+    .header__title_word{
+        margin-left: 27px;
+    }
+
+    .profile{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .profile__info-list{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .profile__info-name{
+    font-size: 22px;
+    }
+    .profile__edit-button{
+        margin: 22px 0 0 10px;
+        max-width: 18px;
+        height: 18px;
+    }
+    #galery__content{
+        grid-template-columns: repeat(auto-fill, minmax(282px, 1fr));
+    }
+    .galery__item{
+        margin: auto;
+    }
+
+    .close{
+        width: 26px;
+        height: 26px;
+        right: -2px;
+        top: -37px;
+    }
+
+    .modal__add{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .modal__add-content{
+        margin: 100px auto;
+    }
+
+    .close__add{
+        width: 20px;
+        height: 20px;
+        right: 6px;
+        top: -37px;
+    }
+}

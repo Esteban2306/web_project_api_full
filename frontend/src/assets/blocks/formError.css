@@ -1,0 +1,26 @@
+.form__input_type_error {
+    border-bottom: 2px solid red;
+    background-color: #ffe6e6;
+}
+
+.modal__error {
+    display: none;
+    color: red;
+    font-size: 12px;
+}
+
+.modal__error_active {
+    display: block;
+}
+
+.button__inactivate{
+    background-color: #808080;
+    border: gray;
+    color: #494949;
+}
+
+.button__inactivate:hover{
+    background-color: #aa3e3e;
+    border: #aa3e3e;
+    color: #494949;
+}
