@@ -5,9 +5,9 @@ const { getAllUSers, getUserById, createUser, updateAvatar, updateUser } = requi
 
 router.get('/', getAllUSers);
 
-router.get('/:id', getUserById);
+// router.get('user/me')
 
-router.post('/', createUser);
+router.get('/:id', getUserById);
 
 router.patch('/:id', updateUser);
 

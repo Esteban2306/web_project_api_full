@@ -1,4 +1,6 @@
 const userSchema = require('../models/user');
+const bycript = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 
 const getAllUSers = async (req, res) => {
     try {
@@ -24,9 +26,10 @@ const getUserById = async (req, res) => {
 
 const createUser = async (req, res) => {
 
-    const { name, about, avatar } = req.body;
+    const { name, about, avatar, email, password } = req.body;
     try {
-        const data = await userSchema.create({ name, about, avatar });
+        const hashPassword = await bycript.hash(password, 10);
+        const data = await userSchema.create({ name, about, avatar, email, password: hashPassword });
         res.json(data);
         return;
     } catch (err) {
@@ -60,10 +63,24 @@ const updateAvatar = async (req, res) => {
     }
 }
 
+const loginUser = (req, res) => {
+    const { email, password } = req.body;
+    return userSchema.findUserByCredentials(email, password)
+        .then((user) => {
+            res.send({
+                token: jwt.sign({ _id: user._id }, 'some-secret-key', { expiresIn: '7d' })
+            })
+        })
+        .catch((err) => {
+            res.status(401).json({ message: err.message });
+        });
+}
+
 module.exports = {
     getAllUSers,
     getUserById,
     createUser,
     updateUser,
-    updateAvatar
+    updateAvatar,
+    loginUser
 }
