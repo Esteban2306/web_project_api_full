@@ -1,7 +1,5 @@
 const path = require('node:path');
-const fs = require('node:fs/promises');
 const cardSchema = require('../models/card');
-const filePath = path.join(__dirname, '../data/cards.json');
 
 const getAllCards = async (req, res) => {
     try {
@@ -31,16 +29,15 @@ const createCards = async (req, res) => {
 
 const deleteCards = async (req, res) => {
     try {
-        const data = await fs.readFile(filePath, 'utf8');
-        const cards = JSON.parse(data);
-        const card = cards.find(c => c.id === req.params.id);
-        if (card) {
-            cards.splice(cards.indexOf(card), 1);
-            await fs.writeFile(filePath, JSON.stringify(cards));
-            res.json(card);
-        } else {
-            res.status(404).json({ message: 'ID de tarjeta no encontrado' });
+        const card = await cardSchema.findById(req.params.id);
+        if (!card) {
+            return res.status(404).json({ message: 'ID de tarjeta no encontrado' });
         }
+        if (card.owner.toString() !== req.user._id) {
+            return res.status(403).json({ message: 'No tienes permiso para eliminar esta tarjeta' });
+        }
+        await card.deleteOne()
+        res.json({ message: 'Tarjeta eliminada correctamente' });
     } catch (err) {
         res.status(500).json({ message: 'Error al eliminar la tarjeta' });
     }

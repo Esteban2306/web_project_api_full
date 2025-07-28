@@ -41,19 +41,20 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-        minlength: 8
+        minlength: 8,
+        select: false
     }
 });
 
 userSchema.statics.findUserByCredentials = function (email, password) {
-    return this.findOne({ email })
-        .then((user) => {
+    return this.findOne({ email }).select('+password')
+        .then(async (user) => {
             if (!user) {
                 return Promise.reject(new Error('Incorrect password or email'));
             }
 
 
-            const matched = bycript.compare(password, user.password)
+            const matched = await bycript.compare(password, user.password)
             if (!matched) {
                 return Promise.reject(new Error('Incorrect password or email'));
             }

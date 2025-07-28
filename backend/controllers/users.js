@@ -11,6 +11,18 @@ const getAllUSers = async (req, res) => {
     }
 };
 
+const getCurrentUser = async (req, res) => {
+    try {
+        const user = await userSchema.findById(req.user._id);
+        if (!user) {
+            return res.status(404).json({ message: 'Usuario no encontrado' });
+        }
+        res.json(user);
+    } catch (err) {
+        res.status(500).json({ message: 'Error al obtener el usuario actual' });
+    }
+}
+
 const getUserById = async (req, res) => {
     try {
         const data = await userSchema.findById(req.params.id)
@@ -38,6 +50,9 @@ const createUser = async (req, res) => {
 }
 
 const updateUser = async (req, res) => {
+    if (req.user._id !== req.params.id) {
+        return res.status(403).json({ message: 'No tienes permiso para editar este perfil' });
+    }
     try {
         const data = await userSchema.findByIdAndUpdate(
             req.params.id,
@@ -82,5 +97,6 @@ module.exports = {
     createUser,
     updateUser,
     updateAvatar,
-    loginUser
+    loginUser,
+    getCurrentUser
 }
