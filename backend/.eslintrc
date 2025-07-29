@@ -18,6 +18,8 @@
     "no-underscore-dangle": ["off"],
     
     // Desactivar o relajar reglas de saltos de línea
-    "linebreak-style": "off"
+    "linebreak-style": "off",
+
+    "no-unused-vars": ["error", { "argsIgnorePattern": "next" }]
   }
 }

@@ -1,57 +1,63 @@
 const userSchema = require('../models/user');
 const bycript = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const validator = require('validator');
+const NotFoundError = require('../middleware/Not-found-err');
+const BadRequest = require('../middleware/bad-reguest');
+const Forbiden = require('../middleware/forbiden');
 
-const getAllUSers = async (req, res) => {
+const getAllUSers = async (req, res, next) => {
     try {
         const data = await userSchema.find()
         res.json(data);
     } catch (err) {
-        res.status(500).json({ message: 'Error al leer el archivo de usuarios' });
+        next(err)
     }
 };
 
-const getCurrentUser = async (req, res) => {
+const getCurrentUser = async (req, res, next) => {
     try {
         const user = await userSchema.findById(req.user._id);
         if (!user) {
-            return res.status(404).json({ message: 'Usuario no encontrado' });
+            throw new NotFoundError('No se encontró ningún usuario');
         }
         res.json(user);
     } catch (err) {
-        res.status(500).json({ message: 'Error al obtener el usuario actual' });
+        next(err);
     }
 }
 
-const getUserById = async (req, res) => {
+const getUserById = async (req, res, next) => {
     try {
         const data = await userSchema.findById(req.params.id)
         if (data) {
             return res.json(data)
         } else {
-            return res.status(404).json({ message: 'ID de usuario no encontrado' });
+            throw new NotFoundError('No se encontró ningún usuario con ese id');;
         }
     } catch (err) {
-        res.status(500).json({ message: 'Error al leer el archivo de usuarios' });
+        next(err);
     }
 };
 
-const createUser = async (req, res) => {
-
+const createUser = async (req, res, next) => {
     const { name, about, avatar, email, password } = req.body;
+    if (avatar && !validator.isURL(avatar)) {
+        throw new BadRequest('URL de avatar invalida');;
+    }
     try {
         const hashPassword = await bycript.hash(password, 10);
         const data = await userSchema.create({ name, about, avatar, email, password: hashPassword });
         res.json(data);
         return;
     } catch (err) {
-        res.status(500).json({ message: 'Error al crear el usuario' });
+        next(err);
     }
 }
 
-const updateUser = async (req, res) => {
+const updateUser = async (req, res, next) => {
     if (req.user._id !== req.params.id) {
-        return res.status(403).json({ message: 'No tienes permiso para editar este perfil' });
+        throw new Forbiden('No tienes permiso para editar este perfil');
     }
     try {
         const data = await userSchema.findByIdAndUpdate(
@@ -61,11 +67,15 @@ const updateUser = async (req, res) => {
         res.json(data);
         return;
     } catch (err) {
-        res.status(500).json({ message: 'Error al actualizar el usuario' });
+        next(err);
     }
 }
 
-const updateAvatar = async (req, res) => {
+const updateAvatar = async (req, res, next) => {
+    const { avatar } = req.body;
+    if (avatar && !validator.isURL(avatar)) {
+        throw new BadRequest('URL de avatar invalida');
+    }
     try {
         const data = await userSchema.findByIdAndUpdate(
             req.params.id,
@@ -74,7 +84,7 @@ const updateAvatar = async (req, res) => {
         res.json(data);
         return;
     } catch (err) {
-        res.status(500).json({ message: 'Error al actualizar el avatar' });
+        next(err);
     }
 }
 

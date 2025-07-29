@@ -1,4 +1,3 @@
-const path = require('node:path');
 const cardSchema = require('../models/card');
 
 const getAllCards = async (req, res) => {
