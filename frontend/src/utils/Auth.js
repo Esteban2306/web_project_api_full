@@ -1,4 +1,5 @@
 export const BASE_URL = 'https://se-register-api.en.tripleten-services.com/v1';
+import * as token from './Token';
 
 export const register = (email, password) => {
     return fetch(`${BASE_URL}/signup`, {
@@ -19,7 +20,7 @@ export const register = (email, password) => {
             return res.json();
         })
         .then((data) => {
-            localStorage.setItem('token', data.token);
+            token.setToken(data.token);
             return { success: true, message: 'Usuario registrado correctamente' };
         })
         .catch((err) => {

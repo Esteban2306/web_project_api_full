@@ -22,45 +22,62 @@ function App() {
   const [isSuccess, setIsSuccess] = useState(false);
   const [showTooltip, setShowTooltip] = useState(false);
   const [data, setData] = useState({
-          email: '',
-          password: ''
-      });
+    email: '',
+    password: ''
+  });
 
   useEffect(() => {
-    if(Token.getToken()){
-    api.getUserInfo()
-    .then((data) => {
-      setCurrentUser(data);
-    })
-    .catch((error) => {
-      console.error('Error fetching user info:', error);
-    });
+    const jwt = Token.getToken();
+    if (!jwt) {
+      return;
+    }
+    if (!isLoggedIn) {
+      auth.getUserInfoWithToken(jwt)
+        .then(({ data }) => {
+          setCurrentUser((currentUser) => {
+            return { ...currentUser, email: data.email }
+          });
+          setIsLoggedIn(true);
+          navigate('/');
+        })
+        .catch((error) => {
+          console.error('Error fetching user info:', error);
+        });
+    }
+    if (isLoggedIn) {
+      api.getUserInfo()
+        .then((data) => {
+          setCurrentUser(data);
+        })
+        .catch((error) => {
+          console.error('Error fetching user info:', error);
+        });
 
-    api.getCards()
-    .then((data) => {
-      setCards(data);
-    })
-    .catch((error) => {
-      console.error('Error fetching cards:', error);
-    });
-  }
-      }, [isLoggedIn]);
+      api.getCards()
+        .then((data) => {
+          setCards(data);
+        })
+        .catch((error) => {
+          console.error('Error fetching cards:', error);
+        });
+    }
+  }, [isLoggedIn]);
 
 
   const handleLogin = async () => {
-    try{
+    try {
       const res = await auth.authorize(data.email, data.password);
 
       Token.setToken(res.token);
-      localStorage.setItem('token', res.token);
+
 
       const userInfo = await api.getUserInfo();
       setCurrentUser(userInfo);
       setIsLoggedIn(true);
-      
+
       navigate('/');
 
-    }catch(error){
+    } catch (error) {
       setIsLoggedIn(false);
       console.error(error);
     }
@@ -69,6 +86,11 @@ function App() {
   const handleLogout = () => {
     Token.removeToken();
     setIsLoggedIn(false);
+    setData({
+      email: '',
+      password: ''
+    });
+    setCurrentUser({});
     navigate('/sign-in');
   };
 
@@ -90,53 +112,35 @@ function App() {
       });
   };
 
-  useEffect(()=>{
-    const jwt = Token.getToken();
-    if (!jwt) {
-      return;
-    } 
-    auth.getUserInfoWithToken(jwt)
-      .then(({ data }) => {
-        setCurrentUser( (currentUser) =>{
-          return {...currentUser, email: data.email}
-        });
-        setIsLoggedIn(true);
-        navigate('/');
-      })
-      .catch((error) => {
-        console.error('Error fetching user info:', error);
-      });
-  },[isLoggedIn])
-
   function handleOpenPopup(popup) {
-        setPopup(popup);
-      };
+    setPopup(popup);
+  };
 
   function handleClosePopup() {
-        setPopup(null);
-      }
+    setPopup(null);
+  }
 
   async function handleCardLike(card) {
-          const isLiked = card.isLiked;
+    const isLiked = card.isLiked;
 
-          await api.changeLikeCardStatus(card._id, isLiked).then((newCard) => {
-              setCards((state) => state.map((currentCard) => currentCard._id === card._id ? newCard : currentCard));
-          }).catch((error) => console.error(error));
-      }
+    await api.changeLikeCardStatus(card._id, isLiked).then((newCard) => {
+      setCards((state) => state.map((currentCard) => currentCard._id === card._id ? newCard : currentCard));
+    }).catch((error) => console.error(error));
+  }
 
   async function handleCardDelete(card) {
-      await api.deleteCard(card._id)
-          .then(() => {
-              setCards((state) => state.filter((currentCard) => currentCard._id !== card._id));
-          })
-            .catch((error) => console.error('Error deleting card:', error));
-      }
+    await api.deleteCard(card._id)
+      .then(() => {
+        setCards((state) => state.filter((currentCard) => currentCard._id !== card._id));
+      })
+      .catch((error) => console.error('Error deleting card:', error));
+  }
 
   const handleUpdateUser = (data) => {
     (async () => {
       await api.changeUserInfo(data).then((newData) => {
         setCurrentUser(newData),
-        handleClosePopup();
+          handleClosePopup();
       });
     })();
   };
@@ -145,7 +149,7 @@ function App() {
     (async () => {
       await api.updateProfile(data).then((newData) => {
         setCurrentUser(newData),
-        handleClosePopup();
+          handleClosePopup();
       });
     })();
   }
@@ -154,7 +158,7 @@ function App() {
     (async () => {
       await api.createNewCard(data).then((newCard) => {
         setCards([newCard, ...cards]),
-        handleClosePopup();
+          handleClosePopup();
       });
     })();
   };
@@ -162,65 +166,65 @@ function App() {
 
   return (
     <CurrentUserContext.Provider
-    value={{
-      currentUser,
-      handleUpdateUser,
-      handleUpdateAvatar,
-      handleLogin,
-      handleRegister,
-      handleOpenPopup,
-      handleClosePopup,
-      popup,
-      handleCardLike,
-      handleCardDelete,
-      cards,
-      handleAddPlaceSubmit,
-      isLoggedIn,
-      setIsLoggedIn,
-      setData,
-      data,
-      isSuccess,
-      showTooltip,
-      setShowTooltip,
-      handleLogout,
+      value={{
+        currentUser,
+        handleUpdateUser,
+        handleUpdateAvatar,
+        handleLogin,
+        handleRegister,
+        handleOpenPopup,
+        handleClosePopup,
+        popup,
+        handleCardLike,
+        handleCardDelete,
+        cards,
+        handleAddPlaceSubmit,
+        isLoggedIn,
+        setIsLoggedIn,
+        setData,
+        data,
+        isSuccess,
+        showTooltip,
+        setShowTooltip,
+        handleLogout,
       }}>
-      <Header/>
+      <Header />
       <Routes>
         <Route path="/" element={
           <ProtectedRoute isLoggedIn={isLoggedIn}>
-          <div className='page'>
-            <Main
-              onOpenPopup={handleOpenPopup}
-              onClosePopup={handleClosePopup}
-              popup={popup}
-            />
-          </div>
+            <div className='page'>
+              <Main
+                onOpenPopup={handleOpenPopup}
+                onClosePopup={handleClosePopup}
+                popup={popup}
+              />
+            </div>
           </ProtectedRoute>
-        }/>
+        } />
 
-        <Route path="/sign-in" 
-        element={
-          <SignIn
-            onLogin={handleLogin}
-          />
-        }/>
+        <Route path="/sign-in"
+          element={
+            <SignIn
+              onLogin={handleLogin}
+            />
+          } />
 
-        <Route path="/sign-up" 
-        element={
+        <Route path="/sign-up"
+          element={
 
-          <SignUp
-            onRegister={handleRegister}
-          />
+            <SignUp
+              onRegister={handleRegister}
+            />
 
-        }/>
+          } />
 
-        <Route path="*" 
-        element = {
-          isLoggedIn ? <Navigate to="/" replace/> : <Navigate to="/sign-in" replace/>
-        }
+        <Route path="*"
+          element={
+            isLoggedIn ? <Navigate to="/" replace /> : <Navigate to="/sign-in" replace />
+          }
         />
       </Routes>
-      <Footer/>
+      <Footer />
     </CurrentUserContext.Provider>
   )
 }
