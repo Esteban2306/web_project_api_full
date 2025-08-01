@@ -6,6 +6,8 @@ const cardsRouter = require('./routes/cards');
 const { loginUser, createUser } = require('./controllers/users');
 const { requestLogger, errorLogger } = require('./middleware/logger');
 const auth = require('./middleware/auth');
+var cors = require('cors');
+require('dotenv').config();
 
 mongoose.connect('mongodb://localhost:27017/aroundb')
 const { PORT = 3000, BASE_PATH } = process.env;
@@ -15,6 +17,9 @@ app.disable('x-powered-by');
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(express.json());
+
+app.use(cors());
+//app.options('*', cors());
 
 app.use(requestLogger);
 

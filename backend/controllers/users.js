@@ -5,6 +5,7 @@ const validator = require('validator');
 const NotFoundError = require('../middleware/Not-found-err');
 const BadRequest = require('../middleware/bad-reguest');
 const Forbiden = require('../middleware/forbiden');
+const jwtSecret = process.env.JWT_SECRET || 'some-secret-key';
 
 const getAllUSers = async (req, res, next) => {
     try {
@@ -93,7 +94,7 @@ const loginUser = (req, res) => {
     return userSchema.findUserByCredentials(email, password)
         .then((user) => {
             res.send({
-                token: jwt.sign({ _id: user._id }, 'some-secret-key', { expiresIn: '7d' })
+                token: jwt.sign({ _id: user._id }, jwtSecret, { expiresIn: '7d' })
             })
         })
         .catch((err) => {
