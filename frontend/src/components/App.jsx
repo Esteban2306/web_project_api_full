@@ -6,7 +6,7 @@ import api from '../utils/Api.js'
 import { useEffect, useState } from 'react';
 import { useNavigate, Routes, Route, Navigate } from 'react-router-dom';
 import ProtectedRoute from './ProtectedRoute/ProtectedRoute.jsx'
-import * as auth from '../utils/auth.js'
+import * as auth from '../utils/Auth.js'
 import * as Token from '../utils/Token.js';
 import CurrentUserContext from '../contexts/CurrentUserContext.js';
 
