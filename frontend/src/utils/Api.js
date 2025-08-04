@@ -75,7 +75,7 @@ class Api {
 
 
 const api = new Api({
-    baseUrl: 'https://around-api.es.tripleten-services.com/v1',
+    baseUrl: 'https://api.aroundus-ec.mooo.com/',
     headers: {
         "content-type": "application/json; charset=UTF-8",
         authorization: '838f9adb-9e40-4b54-8266-23d124ff4365'

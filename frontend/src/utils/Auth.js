@@ -1,4 +1,4 @@
-export const BASE_URL = 'https://se-register-api.en.tripleten-services.com/v1';
+export const BASE_URL = 'https://api.aroundus-ec.mooo.com/';
 import * as token from './Token';
 
 export const register = (email, password) => {
