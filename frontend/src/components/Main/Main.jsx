@@ -11,13 +11,13 @@ import CurrentUserContext from '../../contexts/CurrentUserContext.js'
 
 function Main() {
 
-    const { 
-        currentUser, 
-        handleOpenPopup, 
-        handleClosePopup, 
-        popup, 
-        handleCardLike, 
-        handleCardDelete, 
+    const {
+        currentUser,
+        handleOpenPopup,
+        handleClosePopup,
+        popup,
+        handleCardLike,
+        handleCardDelete,
         cards,
     } = useContext(CurrentUserContext);
 

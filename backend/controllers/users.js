@@ -57,12 +57,12 @@ const createUser = async (req, res, next) => {
 }
 
 const updateUser = async (req, res, next) => {
-    if (req.user._id !== req.params.id) {
+    if (!req.user._id) {
         throw new Forbiden('No tienes permiso para editar este perfil');
     }
     try {
         const data = await userSchema.findByIdAndUpdate(
-            req.params.id,
+            req.user._id,
             req.body,
             { new: true, runValidators: true });
         res.json(data);
@@ -79,7 +79,7 @@ const updateAvatar = async (req, res, next) => {
     }
     try {
         const data = await userSchema.findByIdAndUpdate(
-            req.params.id,
+            req.user._id,
             { avatar: req.body.avatar },
             { new: true, runValidators: true });
         res.json(data);

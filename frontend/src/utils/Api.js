@@ -9,6 +9,7 @@ class Api {
             method: method,
             headers: {
                 ...this._headers,
+                authorization: 'Bearer ' + localStorage.getItem('Token'),
             },
             body: method !== 'GET' ? JSON.stringify(data) : null
         })
@@ -55,13 +56,7 @@ class Api {
     }
 
     changeLikeCardStatus(cardId, isLiked) {
-        return this._makefetch(`cards/${cardId}/likes`, isLiked ? 'DELETE' : 'PUT')
-            .then(this._checkResponse)
-            .catch(this._catchError);
-    }
-
-    deleteLike(cardId) {
-        return this._makefetch(`cards/${cardId}/likes`, 'DELETE')
+        return this._makefetch(`cards/${cardId}/like`, isLiked ? 'DELETE' : 'PUT')
             .then(this._checkResponse)
             .catch(this._catchError);
     }
@@ -75,12 +70,12 @@ class Api {
 
 
 const api = new Api({
-    baseUrl: 'https://api.aroundus-ec.mooo.com/',
+    baseUrl: 'http://localhost:3000',
     headers: {
         "content-type": "application/json; charset=UTF-8",
-        authorization: '838f9adb-9e40-4b54-8266-23d124ff4365'
+        authorization: 'Bearer ' + localStorage.getItem('Token'),
     }
 });
 
 export default api;
-// This code defines an API class that handles requests to a server.
+// This code defines an API class that handles requests to a server

@@ -33,7 +33,7 @@ function App() {
     }
     if (!isLoggedIn) {
       auth.getUserInfoWithToken(jwt)
-        .then(({ data }) => {
+        .then((data) => {
           setCurrentUser((currentUser) => {
             return { ...currentUser, email: data.email }
           });
@@ -56,6 +56,7 @@ function App() {
       api.getCards()
         .then((data) => {
           setCards(data);
+          console.log(data)
         })
         .catch((error) => {
           console.error('Error fetching cards:', error);
@@ -67,7 +68,7 @@ function App() {
   const handleLogin = async () => {
     try {
       const res = await auth.authorize(data.email, data.password);
-
+      console.log(res);
       Token.setToken(res.token);
 
 
@@ -120,13 +121,21 @@ function App() {
     setPopup(null);
   }
 
-  async function handleCardLike(card) {
-    const isLiked = card.isLiked;
+  const handleCardLike = async (card) => {
+    console.log(card)
+    const isLiked = card.likes.some((like) => like._id === currentUser._id);
+    console.log(currentUser._id)
+    try {
+      const updatedCard = await api.changeLikeCardStatus(card._id, isLiked);
 
-    await api.changeLikeCardStatus(card._id, isLiked).then((newCard) => {
-      setCards((state) => state.map((currentCard) => currentCard._id === card._id ? newCard : currentCard));
-    }).catch((error) => console.error(error));
-  }
+      setCards((prevCards) =>
+        prevCards.map((c) => (c._id === updatedCard._id ? updatedCard : c))
+      );
+    } catch (error) {
+      console.error('Error updating like:', error);
+    }
+  };
+
 
   async function handleCardDelete(card) {
     await api.deleteCard(card._id)
@@ -157,8 +166,12 @@ function App() {
   const handleAddPlaceSubmit = (data) => {
     (async () => {
       await api.createNewCard(data).then((newCard) => {
-        setCards([newCard, ...cards]),
-          handleClosePopup();
+        if (newCard) {
+          setCards([newCard, ...cards]),
+            handleClosePopup();
+        } else {
+          console.error('Card creation failed or _id missing:', newCard);
+        }
       });
     })();
   };
