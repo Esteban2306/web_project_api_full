@@ -70,7 +70,7 @@ class Api {
 
 
 const api = new Api({
-    baseUrl: 'http://localhost:3000',
+    baseUrl: 'https://api.aroundus-ec.mooo.com',
     headers: {
         "content-type": "application/json; charset=UTF-8",
         authorization: 'Bearer ' + localStorage.getItem('Token'),

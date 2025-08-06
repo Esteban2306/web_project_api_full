@@ -11,8 +11,7 @@ export default function Card({ card, handleOpenPopup, onLikeCard, onCardDelete }
 
     const newImagePopup = { children: <ImagePopup card={card} /> }
 
-    const isLiked = likes.some((like) => like._id === currentUser._id);
-    console.log(isLiked, card)
+    const isLiked = likes.some((like) => like === currentUser._id);
     const isLikedClass = `galery__item-like-button ${isLiked ? 'galery__item-like-button_active' : ''}`;
 
     function handleOpenPopup(popup) {

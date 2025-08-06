@@ -1,5 +1,5 @@
-//export const BASE_URL = 'https://api.aroundus-ec.mooo.com';
-export const BASE_URL = 'http://localhost:3000';
+export const BASE_URL = 'https://api.aroundus-ec.mooo.com';
+//export const BASE_URL = 'http://localhost:3000';
 import * as token from './Token';
 
 export const register = (email, password) => {

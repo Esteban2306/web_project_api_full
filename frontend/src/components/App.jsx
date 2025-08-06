@@ -56,7 +56,6 @@ function App() {
       api.getCards()
         .then((data) => {
           setCards(data);
-          console.log(data)
         })
         .catch((error) => {
           console.error('Error fetching cards:', error);
@@ -68,7 +67,6 @@ function App() {
   const handleLogin = async () => {
     try {
       const res = await auth.authorize(data.email, data.password);
-      console.log(res);
       Token.setToken(res.token);
 
 
@@ -122,9 +120,7 @@ function App() {
   }
 
   const handleCardLike = async (card) => {
-    console.log(card)
-    const isLiked = card.likes.some((like) => like._id === currentUser._id);
-    console.log(currentUser._id)
+    const isLiked = card.likes.some((like) => like === currentUser._id);
     try {
       const updatedCard = await api.changeLikeCardStatus(card._id, isLiked);
 
